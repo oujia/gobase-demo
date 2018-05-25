@@ -1,4 +1,4 @@
-package main
+package model
 
 import (
 	"github.com/oujia/gobase"
@@ -25,16 +25,3 @@ type EpisodeDao struct {
 	gobase.TableHelper
 }
 
-type Prize struct {
-	Id int `db:"id"`
-	Name string `db:"name"`
-	CreateTime time.Time `db:"create_time"`
-}
-
-type PrizeDao struct {
-	gobase.TableHelper
-}
-
-func (dao *PrizeDao) GetSome(list *[]Prize) error {
-	return dao.GetAll(list, "id, name, create_time", 5)
-}
