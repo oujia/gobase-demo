@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/oujia/gobase-demo/controller"
 	"github.com/oujia/gobase"
+	"github.com/oujia/gobase-demo/config"
 )
 
 var routers = gobase.Routers{
@@ -31,7 +32,7 @@ var routers = gobase.Routers{
 		"gobase/remote",
 		func(c *gin.Context) {
 
-			dwHttp := &gobase.DwHttp{c, DwLog}
+			dwHttp := &gobase.DwHttp{c, config.DwLog}
 			resp, err := dwHttp.SimpleGet("http://www.duowan.com")
 			if err != nil {
 				gobase.NewResponseWithMSG(gobase.CODE_REQUEST_TIMEOUT, nil, err.Error()).SendBy(c)

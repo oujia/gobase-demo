@@ -15,6 +15,7 @@ const (
 	GLOBAL_CONFIG_PATH = "/data/webapps/conf_v2/test/all.json"
 )
 
+var DwLog *gobase.DwLog
 var DB_LOCALHOST *sqlx.DB
 var DB_HD *sqlx.DB
 var GlobalConf *gobase.GlobalConf
@@ -29,6 +30,18 @@ func init()  {
 
 	DB_HD, err = gobase.NewDbClient("dw_ka_hd", GlobalConf.DbInfo)
 	checkErr(err)
+
+	logRedis, ok := GlobalConf.RedisInfo["logstash_redis"]
+	if !ok {
+		panic("lost log redis config")
+	}
+
+	DwLog = &gobase.DwLog{
+		LogKey: LOG_KEY,
+		SelfCall: LOG_SELF_CALL,
+		ModuleCall: LOG_MODULE_CALL,
+		RedisClient: gobase.NewRedisClient(&logRedis),
+	}
 }
 
 func checkErr(err error)  {
