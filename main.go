@@ -9,19 +9,19 @@ import (
 
 var DwLog *gobase.DwLog
 var DB_LOCALHOST *sqlx.DB
+var DB_HD *sqlx.DB
 var GlobalConf *gobase.GlobalConf
 
 func init()  {
 	conf, err := gobase.LoadGlobalConf(GLOBAL_CONFIG_PATH)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	GlobalConf = conf
 
 	DB_LOCALHOST, err = gobase.NewDbClient("localhost", GlobalConf.DbInfo)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
+
+	DB_HD, err = gobase.NewDbClient("dw_ka_hd", GlobalConf.DbInfo)
+	checkErr(err)
 }
 
 var routers = gobase.Routers{
@@ -45,34 +45,6 @@ var routers = gobase.Routers{
 	},
 	gobase.Router{
 		http.MethodGet,
-		"gobase/db",
-		func(c *gin.Context) {
-
-			publishGroupDao := new(PublishGroupDao)
-			publishGroupDao.TableHelper.DB = DB_LOCALHOST
-			publishGroupDao.TableName = "publishGroup"
-			pgList := []PublishGroup{}
-			err := publishGroupDao.GetAll(&pgList, "", 10)
-
-			episodeDao := new(EpisodeDao)
-			episodeDao.TableHelper.DB = DB_LOCALHOST
-			episodeDao.TableName = "episode"
-			episodeList := []Episode{}
-
-			err = episodeDao.GetAll(&episodeList, "id, hash, title", 5)
-			if err != nil {
-				gobase.NewResponse(gobase.CODE_DB_ERROR, err.Error()).SendBy(c)
-				return
-			}
-
-			gobase.NewResponse(gobase.CODE_SUCCESS, map[string]interface{}{
-				"publishGroup": pgList,
-				"episode": episodeList,
-			}).SendBy(c)
-		},
-	},
-	gobase.Router{
-		http.MethodGet,
 		"gobase/remote",
 		func(c *gin.Context) {
 
@@ -84,6 +56,11 @@ var routers = gobase.Routers{
 				gobase.NewResponse(gobase.CODE_SUCCESS, resp).SendBy(c)
 			}
 		},
+	},
+	gobase.Router{
+		http.MethodGet,
+		"gobase/hdPrize",
+		HDPrize,
 	},
 }
 
@@ -107,4 +84,10 @@ func main()  {
 	gobase.InitRouter(r, routers)
 
 	r.Run(SERVER_ADDR)
+}
+
+func checkErr(err error)  {
+	if err != nil {
+		panic(err)
+	}
 }
