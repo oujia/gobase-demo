@@ -51,4 +51,9 @@ var routers = gobase.Routers{
 		"gobase/hdPrizeOne",
 		controller.HDPrizeOne,
 	},
+	gobase.Router{
+		http.MethodGet,
+		"loc/episodeTest",
+		controller.EpisodeTest,
+	},
 }

@@ -28,8 +28,8 @@ func init()  {
 	DB_LOCALHOST, err = gobase.NewDbClient("localhost", GlobalConf.DbInfo)
 	checkErr(err)
 
-	DB_HD, err = gobase.NewDbClient("dw_ka_hd", GlobalConf.DbInfo)
-	checkErr(err)
+	//DB_HD, err = gobase.NewDbClient("dw_ka_hd", GlobalConf.DbInfo)
+	//checkErr(err)
 
 	logRedis, ok := GlobalConf.RedisInfo["logstash_redis"]
 	if !ok {
