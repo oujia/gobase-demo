@@ -51,3 +51,54 @@ func EpisodeTest(c *gin.Context)  {
 		"total": total,
 	}).SendBy(c)
 }
+
+func TestGetCount(c *gin.Context)  {
+	keyword := map[string]interface{}{
+		"_foundRows": true,
+		"_field": "id",
+		"_sort": "id desc",
+		"_limit": 5,
+		"_where": "id>200000",
+	}
+	count, err := episodeDao.GetCount(nil, keyword)
+
+	if err != nil {
+		gobase.NewResponse(gobase.CODE_DB_ERROR, err.Error()).SendBy(c)
+		return
+	}
+
+	gobase.NewResponse(gobase.CODE_SUCCESS, count).SendBy(c)
+}
+
+func TestUpdate(c *gin.Context) {
+	where := map[string]interface{}{
+		"id": 532,
+	}
+	data := map[string]interface{} {
+		"bangumiId": 123,
+		"title": "test",
+	}
+
+	ar, err := episodeDao.UpdateObject(data, where)
+	if err != nil {
+		gobase.NewResponse(gobase.CODE_DB_ERROR, err.Error()).SendBy(c)
+		return
+	}
+
+	gobase.NewResponse(gobase.CODE_SUCCESS, ar).SendBy(c)
+}
+
+
+func TestDel(c *gin.Context) {
+	where := map[string]interface{}{
+		"id": 532,
+	}
+
+	ar, err := episodeDao.DelObject(where)
+	if err != nil {
+		gobase.NewResponse(gobase.CODE_DB_ERROR, err.Error()).SendBy(c)
+		return
+	}
+
+	gobase.NewResponse(gobase.CODE_SUCCESS, ar).SendBy(c)
+}

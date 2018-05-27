@@ -56,4 +56,19 @@ var routers = gobase.Routers{
 		"loc/episodeTest",
 		controller.EpisodeTest,
 	},
+	gobase.Router{
+		http.MethodGet,
+		"loc/testCount",
+		controller.TestGetCount,
+	},
+	gobase.Router{
+		http.MethodGet,
+		"loc/testUpdate",
+		controller.TestUpdate,
+	},
+	gobase.Router{
+		http.MethodGet,
+		"loc/testDel",
+		controller.TestDel,
+	},
 }
