@@ -71,4 +71,9 @@ var routers = gobase.Routers{
 		"loc/testDel",
 		controller.TestDel,
 	},
+	gobase.Router{
+		http.MethodGet,
+		"loc/testAdd",
+		controller.TestAdd,
+	},
 }

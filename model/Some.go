@@ -16,7 +16,7 @@ type PublishGroupDao struct {
 }
 
 type Episode struct {
-	Id int `db:"id"`
+	Id int `db:"id,ai"`
 	Hash string `db:"hash"`
 	Title string `db:"title"`
 }
