@@ -109,15 +109,49 @@ func TestDel(c *gin.Context) {
 
 func TestAdd(c *gin.Context)  {
 	episode := model.Episode{
+		Id: 206163,
 		Hash: "foobar1",
-		Title: "test title1",
+		Title: "test adadada",
 	}
 
-	id, err := episodeDao.AddObject(episode)
+	id, err := episodeDao.AddObjectNx(episode)
 	if err != nil {
 		gobase.NewResponse(gobase.CODE_DB_ERROR, err.Error()).SendBy(c)
 		return
 	}
 
 	gobase.NewResponse(gobase.CODE_SUCCESS, id).SendBy(c)
+}
+
+func TestAdds(c *gin.Context)  {
+	episodes := []model.Episode{
+		model.Episode{
+			Hash: "foobar1",
+			Title: "test adadada1",
+		},
+		model.Episode{
+			Hash: "foobar2",
+			Title: "test adadada2",
+		},
+		model.Episode{
+			Hash: "foobar3",
+			Title: "test adadada3",
+		},
+		model.Episode{
+			Hash: "foobar4",
+			Title: "test adadada4",
+		},
+		model.Episode{
+			Hash: "foobar5",
+			Title: "test adadada5",
+		},
+	}
+
+	ar, err := episodeDao.AddObjects(episodes)
+	if err != nil {
+		gobase.NewResponse(gobase.CODE_DB_ERROR, err.Error()).SendBy(c)
+		return
+	}
+
+	gobase.NewResponse(gobase.CODE_SUCCESS, ar).SendBy(c)
 }
