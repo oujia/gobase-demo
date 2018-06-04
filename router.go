@@ -81,4 +81,9 @@ var routers = gobase.Routers{
 		"loc/testAdds",
 		controller.TestAdds,
 	},
+	gobase.Router{
+		http.MethodGet,
+		"r2m/testGetRow",
+		controller.TestR2MGetRow,
+	},
 }

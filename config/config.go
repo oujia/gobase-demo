@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/jmoiron/sqlx"
 	"github.com/oujia/gobase"
+	"github.com/go-redis/redis"
 )
 
 const (
@@ -18,6 +19,7 @@ const (
 var DwLog *gobase.DwLog
 var DB_LOCALHOST *sqlx.DB
 var DB_HD *sqlx.DB
+var REDIS_LOCAL *redis.Client
 var GlobalConf *gobase.GlobalConf
 
 func init()  {
@@ -42,6 +44,13 @@ func init()  {
 		ModuleCall: LOG_MODULE_CALL,
 		RedisClient: gobase.NewRedisClient(&logRedis),
 	}
+
+	localRedisConfig, ok := GlobalConf.RedisInfo["localhost"]
+	if !ok {
+		panic("lost log localRedisConfig config")
+	}
+
+	REDIS_LOCAL = gobase.NewRedisClient(&localRedisConfig)
 }
 
 func checkErr(err error)  {
