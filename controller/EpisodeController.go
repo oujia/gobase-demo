@@ -24,18 +24,18 @@ func init()  {
 }
 
 func TestR2MGetRow(c *gin.Context) {
-	var hash string
+	var episode model.Episode
 	where := map[string]interface{} {
 		"id": 205979,
 	}
 	keyword := map[string]interface{}{
-		"_field": "hash",
+		"_field": "id, hash, title",
 	}
-	err := episodeR2m.R2M.GetRow(&hash, where, keyword)
+	err := episodeR2m.R2M.GetRow(&episode, where, keyword)
 	if err != nil {
 		gobase.NewResponse(gobase.CODE_DB_ERROR, err.Error()).SendBy(c)
 		return
 	}
 
-	gobase.NewResponse(gobase.CODE_SUCCESS, hash).SendBy(c)
+	gobase.NewResponse(gobase.CODE_SUCCESS, episode).SendBy(c)
 }
